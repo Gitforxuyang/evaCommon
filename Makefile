@@ -7,14 +7,14 @@ APPID := $(shell grep -m 1 "appId" "./conf/config.default.json" | sed -E 's/^ */
 PORT := $(shell grep -m 1 "port" "./conf/config.default.json" | sed -E 's/^ *//;s/.*: *"//;s/",?//')
 
 proto:
-	mkdir ./proto/evaDemo || true
+	mkdir ./proto/${NAME} || true
 	protoc --eva_out=plugins=all:./proto/${NAME} -I=./proto ${NAME}.proto
 	protoc --go_out=plugins=grpc:./proto/${NAME} -I=./proto ${NAME}.proto
 
 .PHONY: proto
 
 build:
-	GOOS=linux GOARCH=amd64 go build -o evaDemo main.go
+	GOOS=linux GOARCH=amd64 go build -o ${NAME} main.go
 
 local:
 	make build
