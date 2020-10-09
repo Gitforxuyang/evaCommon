@@ -23,3 +23,12 @@ local:
 test:
 	make build
 	docker build -t ${APPID}:v${VERSION} --build-arg ENV=test PORT=${PORT} NAME=${NAME} .
+
+add:
+	git subtree add --prefix=infra/common https://github.com/Gitforxuyang/evaCommon.git master --squash
+
+pull:
+	git subtree pull --prefix=infra/common https://github.com/Gitforxuyang/evaCommon.git master --squash
+
+push:
+	git subtree push --prefix=infra/common https://github.com/Gitforxuyang/evaCommon.git master
