@@ -4,7 +4,7 @@ VERSION := $(shell grep -m 1 "version" "./conf/config.default.json" | sed -E 's/
 NAME := $(shell grep -m 1 "name" "./conf/config.default.json" | sed -E 's/^ *//;s/.*: *"//;s/",?//')
 DESC := $(shell grep -m 1 "desc" "./conf/config.default.json" | sed -E 's/^ *//;s/.*: *"//;s/",?//')
 APPID := $(shell grep -m 1 "appId" "./conf/config.default.json" | sed -E 's/^ *//;s/.*: *"//;s/",?//')
-PORT := $(shell grep -m 1 "port" "./conf/config.default.json" | sed -E 's/^ *//;s/.*: *"//;s/",?//')
+PORT := $(shell grep -m 1 "port" "./conf/config.default.json" | sed -E 's/^ *//;s/.*: *"//;s/[,]//;s/"port": ?//')
 
 proto:
 	mkdir ./proto/${NAME} || true
@@ -18,11 +18,11 @@ build:
 
 local:
 	make build
-	docker build -t ${APPID}:v${VERSION} --build-arg ENV=local PORT=${PORT} NAME=${NAME} .
+	docker build -f infra/common/Dockerfile -t ${APPID}:v${VERSION}  --build-arg ENV=local --build-arg PORT=${PORT} --build-arg NAME=${NAME}   .
 
 test:
 	make build
-	docker build -t ${APPID}:v${VERSION} --build-arg ENV=test PORT=${PORT} NAME=${NAME} .
+	docker build -f infra/common/Dockerfile --build-arg ENV=test --build-arg PORT=${PORT} --build-arg NAME=${NAME}  -t ${APPID}:v${VERSION}  .
 
 add:
 	git subtree add --prefix=infra/common https://github.com/Gitforxuyang/evaCommon.git master --squash
