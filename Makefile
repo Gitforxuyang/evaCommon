@@ -11,6 +11,10 @@ proto:
 	protoc --eva_out=plugins=all:./proto/${NAME} -I=./proto ${NAME}.proto
 	protoc --go_out=plugins=grpc:./proto/${NAME} -I=./proto ${NAME}.proto
 
+client:
+	mkdir ./proto/${name} || true
+	protoc --eva_out=plugins=client:./proto/${name} -I=./proto ${name}.proto
+
 .PHONY: proto
 
 build:
