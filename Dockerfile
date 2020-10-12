@@ -12,11 +12,16 @@ RUN mkdir -p /app
 WORKDIR /app
 
 ##暴露端口
+ARG PORT=0
+ARG ENV="local"
+ARG NAME="default"
+
 EXPOSE ${PORT}
+
+COPY conf/config.*.json /app/conf/
 
 ENV ENV=${ENV}
 
-COPY conf/config.*.json /app/conf/
 COPY ${NAME} /app/${NAME}
 
 #最终运行docker的命令
